@@ -115,7 +115,7 @@ func (s *ObjdbStore) save(session *sessions.Session) error {
 		return err
 	}
 	s.StoreMutex.Lock()
-	key := "session_" + session.ID
+	key := s.Bucket + "/" + "session_" + session.ID
 	err = s.Clientapi.SetObj(key, bytedata)
 	s.StoreMutex.Unlock()
 
@@ -132,7 +132,7 @@ func (s *ObjdbStore) load(session *sessions.Session) error {
 
 	var  sval sessionObj
 	s.StoreMutex.Lock()
-	key := "session_" + session.ID
+	key := s.Bucket + "/" + "session_" + session.ID
 	err := s.Clientapi.GetObj(key, &sval)
 	s.StoreMutex.Unlock()
 	if err != nil {
@@ -149,7 +149,7 @@ func (s *ObjdbStore) load(session *sessions.Session) error {
 
 func (s *ObjdbStore) delete(session *sessions.Session) error {
 	s.StoreMutex.Lock()
-	key := "session_" + session.ID
+	key := s.Bucket + "/" + "session_" + session.ID
 	err := s.Clientapi.DelObj(key)
 	s.StoreMutex.Unlock()
 	return err
